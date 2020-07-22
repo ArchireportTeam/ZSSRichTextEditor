@@ -2248,7 +2248,7 @@ static CGFloat kDefaultScale = 0.5;
             self.sourceView.frame = sourceFrame;
             
             // Provide editor with keyboard height and editor view height
-            [self setFooterHeight:(keyboardHeight - 8)];
+            [self setFooterHeight:10];
             [self setContentHeight: self.editorViewFrame.size.height];
             
         } completion:nil];
