@@ -59,7 +59,7 @@ zss_editor.init = function() {
     // Make sure that when we tap anywhere in the document we focus on the editor
     $(window).on('touchmove', function(e) {
                  zss_editor.isDragging = true;
-                 zss_editor.updateScrollOffset = true;
+                 zss_editor.updateScrollOffset = false;
                  zss_editor.setScrollPosition();
                  zss_editor.enabledEditingItems(e);
                  });
