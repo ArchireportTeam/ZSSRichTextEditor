@@ -47,7 +47,7 @@ zss_editor.init = function() {
                                 });
     
     $(document).on('selectionchange',function(e){
-                   zss_editor.calculateEditorHeightWithCaretPosition();
+                   /*zss_editor.calculateEditorHeightWithCaretPosition();*/
                    zss_editor.setScrollPosition();
                    zss_editor.enabledEditingItems(e);
                    });
