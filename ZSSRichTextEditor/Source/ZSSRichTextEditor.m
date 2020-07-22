@@ -1425,8 +1425,26 @@ static CGFloat kDefaultScale = 0.5;
     colorPicker.delegate = self;
     colorPicker.tag = 1;
     colorPicker.title = NSLocalizedString(@"Text Color", nil);
-    [self.navigationController pushViewController:colorPicker animated:YES];
     
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:colorPicker];
+    
+    if(navCtrl.view.subviews.count>0){
+        UIView *subview =  [navCtrl.view.subviews objectAtIndex:0];
+        subview.frame = CGRectMake(0, 50, subview.frame.size.width, subview.frame.size.height-50);
+    }
+    
+    [self presentViewController:navCtrl animated:TRUE completion:^{
+        UIBarButtonItem *btn = colorPicker.navigationItem.leftBarButtonItem;
+        btn.target = self;
+        btn.action = @selector(closeColorPicker);
+    }];
+
+    
+}
+
+-(void)closeColorPicker{
+    [self dismissViewControllerAnimated:TRUE completion:^{
+    }];
 }
 
 - (void)bgColor {
@@ -1441,22 +1459,37 @@ static CGFloat kDefaultScale = 0.5;
     colorPicker.delegate = self;
     colorPicker.tag = 2;
     colorPicker.title = NSLocalizedString(@"BG Color", nil);
-    [self.navigationController pushViewController:colorPicker animated:YES];
+    
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:colorPicker];
+    
+    if(navCtrl.view.subviews.count>0){
+        UIView *subview =  [navCtrl.view.subviews objectAtIndex:0];
+        subview.frame = CGRectMake(0, 50, subview.frame.size.width, subview.frame.size.height-50);
+    }
+    
+    [self presentViewController:navCtrl animated:TRUE completion:^{
+        UIBarButtonItem *btn = colorPicker.navigationItem.leftBarButtonItem;
+        btn.target = self;
+        btn.action = @selector(closeColorPicker);
+    }];
     
 }
 
 - (void)setSelectedColor:(UIColor*)color tag:(int)tag {
     
-    NSString *hex = [NSString stringWithFormat:@"#%06x",HexColorFromUIColor(color)];
-    NSString *trigger;
-    if (tag == 1) {
-        trigger = [NSString stringWithFormat:@"zss_editor.setTextColor(\"%@\");", hex];
-    } else if (tag == 2) {
-        trigger = [NSString stringWithFormat:@"zss_editor.setBackgroundColor(\"%@\");", hex];
-    }
-    [self.editorView evaluateJavaScript:trigger completionHandler:^(NSString *result, NSError *error) {
-     
+    [self dismissViewControllerAnimated:YES completion:^{
+        NSString *hex = [NSString stringWithFormat:@"#%06x",HexColorFromUIColor(color)];
+        NSString *trigger;
+        if (tag == 1) {
+            trigger = [NSString stringWithFormat:@"zss_editor.setTextColor(\"%@\");", hex];
+        } else if (tag == 2) {
+            trigger = [NSString stringWithFormat:@"zss_editor.setBackgroundColor(\"%@\");", hex];
+        }
+        [self.editorView evaluateJavaScript:trigger completionHandler:^(NSString *result, NSError *error) {
+            
+        }];
     }];
+   
 }
 
 - (void)undo:(ZSSBarButtonItem *)barButtonItem {
