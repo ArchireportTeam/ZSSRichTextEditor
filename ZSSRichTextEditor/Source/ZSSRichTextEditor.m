@@ -2352,6 +2352,7 @@ static CGFloat kDefaultScale = 0.5;
 
 
 - (void)tidyHTML:(NSString *)html completionHandler:(void (^ _Nullable)(_Nullable id, NSError * _Nullable error))completionHandler {
+
     html = [html stringByReplacingOccurrencesOfString:@"<br>" withString:@"<br />"];
     html = [html stringByReplacingOccurrencesOfString:@"<hr>" withString:@"<hr />"];
     if (self.formatHTML) {
@@ -2361,6 +2362,15 @@ static CGFloat kDefaultScale = 0.5;
             
             if (error != NULL) {
                 NSLog(@"HTML Tidying Error: %@", error);
+            }
+            
+            NSArray *lines = [result componentsSeparatedByString:@"\n"];
+            if(lines.count > 0){
+                NSString *line = [lines objectAtIndex:0];
+                if(![line containsString:@"<div>"]){
+                    NSString *newLine = [NSString stringWithFormat:@"<div>%@</div>",line];
+                    result = [result stringByReplacingOccurrencesOfString:line withString:newLine];
+                }
             }
             
             NSLog(@"%@", result);
